@@ -32,7 +32,7 @@ export function Hero() {
     setAmountCop(val);
   };
 
-  const bsAmount = (Number(amountCop) * rate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const bsAmount = (Number(amountCop) / rate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const formattedCop = Number(amountCop).toLocaleString('es-CO');
   return (
     <header className="relative overflow-hidden text-white">
