@@ -19,8 +19,8 @@ export function Rates() {
         const data = json.data?.rate;
         if (data) {
           setRates([
-            { from: "🇨🇴 Colombia", to: "🇻🇪 Venezuela", rate: parseFloat(data.buyRate).toString().replace('.', ','), detail: `1 COP = ${parseFloat(data.buyRate).toString().replace('.', ',')} Bs`, highlight: true, color: "from-[#FFCC00] via-[#0033A0] to-[#CF142B]" },
-            { from: "🇺🇸 USD", to: "🇻🇪 Venezuela", rate: parseFloat(data.usd).toString().replace('.', ','), detail: `1 USD = ${parseFloat(data.usd).toString().replace('.', ',')} Bs`, highlight: false, color: "from-[#0033A0] via-white to-[#CF142B]" },
+            { from: "🇨🇴 Colombia", to: "🇻🇪 Venezuela", rate: parseFloat(data.sellRate).toString().replace('.', ','), detail: `1 COP = ${parseFloat(data.sellRate).toString().replace('.', ',')} Bs`, highlight: true, color: "from-[#FFCC00] via-[#0033A0] to-[#CF142B]" },
+            { from: "🇺🇸 USD", to: "🇻🇪 Venezuela", rate: parseFloat(data.bcv).toString().replace('.', ','), detail: `1 USD = ${parseFloat(data.bcv).toString().replace('.', ',')} Bs`, highlight: false, color: "from-[#0033A0] via-white to-[#CF142B]" },
           ]);
           setLastUpdated("Actualizado justo ahora");
         }
@@ -56,9 +56,8 @@ export function Rates() {
           {rates.map((r) => (
             <div
               key={r.from + r.to}
-              className={`relative rounded-2xl border-2 p-6 text-left shadow-lg hover:shadow-2xl hover:-translate-y-1 transition group overflow-hidden ${
-                r.highlight ? "bg-gradient-to-br from-[#001A5C] to-[#0033A0] text-white border-[#FFCC00] scale-105" : "bg-white border-transparent"
-              }`}
+              className={`relative rounded-2xl border-2 p-6 text-left shadow-lg hover:shadow-2xl hover:-translate-y-1 transition group overflow-hidden ${r.highlight ? "bg-gradient-to-br from-[#001A5C] to-[#0033A0] text-white border-[#FFCC00] scale-105" : "bg-white border-transparent"
+                }`}
             >
               <div className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${r.color}`} />
               {r.highlight && (
