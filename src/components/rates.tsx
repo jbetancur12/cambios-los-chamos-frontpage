@@ -19,7 +19,7 @@ export function Rates() {
         const data = json.data?.rate;
         if (data) {
           setRates([
-            { from: "🇨🇴 Colombia", to: "🇻🇪 Venezuela", rate: parseFloat(data.sellRate).toString().replace('.', ','), detail: `1 COP = ${parseFloat(data.sellRate).toString().replace('.', ',')} Bs`, highlight: true, color: "from-[#FFCC00] via-[#0033A0] to-[#CF142B]" },
+            { from: "🇨🇴 Colombia", to: "🇻🇪 Venezuela", rate: parseFloat(data.sellRate).toString().replace('.', ','), detail: `10.000 COP = ${(10000 / parseFloat(data.sellRate)).toFixed(2).toString().replace('.', ',')} Bs`, highlight: true, color: "from-[#FFCC00] via-[#0033A0] to-[#CF142B]" },
             { from: "🇺🇸 USD", to: "🇻🇪 Venezuela", rate: parseFloat(data.bcv).toString().replace('.', ','), detail: `1 USD = ${parseFloat(data.bcv).toString().replace('.', ',')} Bs`, highlight: false, color: "from-[#0033A0] via-white to-[#CF142B]" },
           ]);
           setLastUpdated("Actualizado justo ahora");
