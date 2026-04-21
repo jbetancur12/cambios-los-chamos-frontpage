@@ -115,7 +115,7 @@ export function Hero() {
           </div>
 
           <div className="mt-10 grid grid-cols-3 gap-6 max-w-md">
-            <Stat value="7+" label="Años de experiencia" color="text-[#FFCC00]" />
+            <Stat value={`${new Date().getFullYear() - 2019}+`} label="Años de experiencia" color="text-[#FFCC00]" />
             <Stat value="50K+" label="Familias felices" color="text-white" />
             <Stat value="99%" label="Satisfacción" color="text-[#FFCC00]" />
           </div>

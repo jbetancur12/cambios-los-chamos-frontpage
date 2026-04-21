@@ -52,23 +52,15 @@ export function Visit() {
         </div>
 
         <div className="mt-10 grid md:grid-cols-2 gap-6 items-stretch">
-          <div className="rounded-3xl overflow-hidden shadow-2xl min-h-[320px] relative group">
-            <ImageWithFallback
-              src="https://images.unsplash.com/photo-1724711603891-ca4557b9f40f?w=800"
-              alt="Caracas Venezuela"
-              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#001A5C]/80 via-transparent to-transparent" />
-            <div className="absolute top-4 left-4 rounded-full bg-white/90 backdrop-blur px-3 py-1 text-xs text-[#001A5C]">
-              🇻🇪 Caracas, Venezuela
-            </div>
-            <div className="absolute bottom-6 left-6 right-6 text-white">
-              <div className="tracking-tight">Conectando familias</div>
-              <p className="text-sm text-white/80 mt-1">Llevamos tu esfuerzo hasta tu hogar</p>
-            </div>
-            <button className="absolute bottom-6 right-6 rounded-full bg-[#FFCC00] text-[#001A5C] px-4 py-2 text-sm shadow-lg hover:scale-105 transition">
-              Ver en Maps →
-            </button>
+          <div className="rounded-3xl overflow-hidden shadow-2xl min-h-[320px] md:min-h-full relative group bg-gray-100">
+            <iframe 
+              src="https://maps.google.com/maps?q=Cra%2021%2043-40,%20Dosquebradas,%20Risaralda&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              className="absolute inset-0 w-full h-full border-0"
+              allowFullScreen={false}
+              loading="lazy"
+              title="Ubicación Cambios Los Chamos"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
 
           <div className="relative rounded-3xl overflow-hidden p-8 shadow-2xl">

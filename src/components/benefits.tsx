@@ -1,12 +1,15 @@
 import { DollarSign, Zap, Shield, Heart, Award, Users, CheckCircle2 } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
+const foundationYear = 2019;
+const calculateYears = () => new Date().getFullYear() - foundationYear;
+
 const items = [
   { icon: DollarSign, title: "Mejores Tasas", desc: "Tasas competitivas actualizadas en tiempo real.", color: "bg-[#FFCC00]", text: "text-[#001A5C]" },
   { icon: Zap, title: "Transferencias Rápidas", desc: "El dinero llega en cuestión de minutos.", color: "bg-[#0033A0]", text: "text-white" },
   { icon: Shield, title: "Seguro y Confiable", desc: "Operaciones 100% protegidas y verificadas.", color: "bg-[#CF142B]", text: "text-white" },
   { icon: Heart, title: "Atención Personalizada", desc: "Equipo amable listo para ayudarte.", color: "bg-[#FFCC00]", text: "text-[#001A5C]" },
-  { icon: Award, title: "Años de Experiencia", desc: "Más de una década en el mercado.", color: "bg-[#0033A0]", text: "text-white" },
+  { icon: Award, title: "Años de Experiencia", desc: `Más de ${calculateYears()} años en el mercado.`, color: "bg-[#0033A0]", text: "text-white" },
   { icon: Users, title: "Miles de Clientes", desc: "Miles de familias confían en nosotros.", color: "bg-[#CF142B]", text: "text-white" },
 ];
 
