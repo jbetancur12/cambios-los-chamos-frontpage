@@ -4,7 +4,6 @@ import { TrendingUp, RefreshCw } from "lucide-react";
 export function Rates() {
   const [rates, setRates] = useState([
     { from: "🇨🇴 Colombia", to: "🇻🇪 Venezuela", rate: "...", detail: "Cargando...", highlight: true, color: "from-[#FFCC00] via-[#0033A0] to-[#CF142B]" },
-    { from: "🇻🇪 Venezuela", to: "🇨🇴 Colombia", rate: "...", detail: "Cargando...", highlight: false, color: "from-[#CF142B] via-[#FFCC00] to-[#0033A0]" },
     { from: "🇺🇸 USD", to: "🇻🇪 Venezuela", rate: "...", detail: "Cargando...", highlight: false, color: "from-[#0033A0] via-white to-[#CF142B]" },
   ]);
   const [loading, setLoading] = useState(false);
@@ -13,7 +12,7 @@ export function Rates() {
   const fetchRates = async () => {
     setLoading(true);
     try {
-      const apiUrl = import.meta.env?.VITE_API_URL || 'http://localhost:3000';
+      const apiUrl = import.meta.env?.PUBLIC_API_URL || 'http://localhost:3000';
       const res = await fetch(`${apiUrl}/exchange-rate/public-current`);
       if (res.ok) {
         const json = await res.json();
@@ -21,7 +20,6 @@ export function Rates() {
         if (data) {
           setRates([
             { from: "🇨🇴 Colombia", to: "🇻🇪 Venezuela", rate: parseFloat(data.buyRate).toString().replace('.', ','), detail: `1 COP = ${parseFloat(data.buyRate).toString().replace('.', ',')} Bs`, highlight: true, color: "from-[#FFCC00] via-[#0033A0] to-[#CF142B]" },
-            { from: "🇻🇪 Venezuela", to: "🇨🇴 Colombia", rate: parseFloat(data.sellRate).toString().replace('.', ','), detail: `1 Bs = ${parseFloat(data.sellRate).toString().replace('.', ',')} COP`, highlight: false, color: "from-[#CF142B] via-[#FFCC00] to-[#0033A0]" },
             { from: "🇺🇸 USD", to: "🇻🇪 Venezuela", rate: parseFloat(data.usd).toString().replace('.', ','), detail: `1 USD = ${parseFloat(data.usd).toString().replace('.', ',')} Bs`, highlight: false, color: "from-[#0033A0] via-white to-[#CF142B]" },
           ]);
           setLastUpdated("Actualizado justo ahora");
@@ -54,7 +52,7 @@ export function Rates() {
           Especialistas en cambio de pesos colombianos a bolívares venezolanos. ¡Actualizadas en vivo!
         </p>
 
-        <div className="mt-10 grid md:grid-cols-3 gap-6">
+        <div className="mt-10 grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {rates.map((r) => (
             <div
               key={r.from + r.to}

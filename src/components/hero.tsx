@@ -10,7 +10,7 @@ export function Hero() {
   useEffect(() => {
     const fetchRate = async () => {
       try {
-        const apiUrl = import.meta.env?.VITE_API_URL || 'http://localhost:3000';
+        const apiUrl = import.meta.env?.PUBLIC_API_URL || 'http://localhost:3000';
         const res = await fetch(`${apiUrl}/exchange-rate/public-current`);
         if (res.ok) {
           const json = await res.json();
@@ -159,7 +159,7 @@ export function Hero() {
               <span className="text-xs rounded-full bg-[#FFCC00]/30 text-[#FFCC00] px-2 py-0.5">🇻🇪 Bs</span>
             </div>
             <div className="mt-2 tracking-tight text-[#FFCC00] text-xl">Bs. {loadingRate ? "..." : bsAmount}</div>
-            <div className="mt-2 text-xs text-white/60">Tasa: 1 COP = {loadingRate ? "..." : rate.toString().replace('.', ',')} Bs</div>
+            <div className="mt-2 text-xs text-white/60">Tasa: {loadingRate ? "..." : rate.toString().replace('.', ',')}</div>
             <button onClick={() => window.open(`https://wa.me/573023414813?text=${encodeURIComponent(`¡EPA CHAMO! Quiero enviar COP $${formattedCop} para recibir Bs. ${bsAmount}.`)}`, '_blank')} className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#CF142B] via-[#FFCC00] to-[#0033A0] hover:brightness-110 transition py-3 shadow-lg">
               Enviar ahora ✨
             </button>
