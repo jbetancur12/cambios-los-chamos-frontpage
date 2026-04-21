@@ -1,78 +1,53 @@
 ---
+import '../styles/globals.css';
+import { Hero } from '../components/hero';
+import { Rates } from '../components/rates';
+import { CTABanner } from '../components/cta-banner';
+import { HowItWorks } from '../components/how-it-works';
+import { Benefits } from '../components/benefits';
+import { Visit } from '../components/visit';
+import { Footer } from '../components/footer';
 ---
 
+<!DOCTYPE html>
 <html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<title>Cambios Los Chamos - Giros a Venezuela Rápidos y Seguros</title>
-		<meta name="description" content="Envía dinero a Venezuela de forma rápida, segura y con la mejor tasa. Transferencias bancarias y pago móvil al instante. Pesos a Bolívares." />
-		<meta name="keywords" content="giros a venezuela, remesas, cambios, pesos a bolivares, dolar a bolivares, envio de dinero, cambios los chamos" />
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://cambiosloschamo.com/" />
-		<meta property="og:title" content="Cambios Los Chamos - Giros a Venezuela" />
-		<link rel="icon" type="image/png" href="/pwa-192x192.png" />
-		<meta property="og:description" content="La forma más segura y rápida de enviar dinero a Venezuela. ¡Tasa competitiva y atención personalizada!" />
-		<meta property="og:image" content="/LogoLosChamos.avif" />
-		<style>
-			body {
-				font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-				background-color: #f3f4f6;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				min-height: 100vh;
-				margin: 0;
-				text-align: center;
-				color: #1f2937;
-			}
-			.container {
-				background: white;
-				padding: 3rem;
-				border-radius: 1rem;
-				box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-				max-width: 90%;
-				width: 400px;
-			}
-			h1 {
-				font-size: 1.875rem;
-				font-weight: 700;
-				margin-bottom: 1rem;
-				color: #111827;
-			}
-			p {
-				margin-bottom: 2rem;
-				color: #6b7280;
-			}
-			.btn {
-				display: inline-block;
-				background-color: #2563eb;
-				color: white;
-				font-weight: 600;
-				padding: 0.75rem 1.5rem;
-				border-radius: 0.5rem;
-				text-decoration: none;
-				transition: background-color 0.2s;
-			}
-			.btn:hover {
-				background-color: #1d4ed8;
-			}
-			.icon {
-				width: 280px;
-				height: auto;
-				margin-bottom: 1.5rem;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container">
-			<img src="/LogoLosChamos.avif" alt="Logo Cambios Los Chamos" class="icon" />
-			<h1>Página en Construcción</h1>
-			<p>Estamos trabajando para mejorar tu experiencia. Pronto verás nuestra nueva página principal aquí.</p>
-			
-			<a href="https://app.cambiosloschamo.com" class="btn">
-				Ingresar a la App
-			</a>
-		</div>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Basic SEO -->
+    <title>Cambios Los Chamos | Envía Dinero a Venezuela con las Mejores Tasas</title>
+    <meta name="description" content="Envía dinero a tu familia en Venezuela de forma rápida, segura y con más de 7 años de experiencia. Cotiza tu envío y disfruta la mejor tasa en Cambios Los Chamos.">
+    <meta name="keywords" content="enviar dinero a venezuela, remesas a venezuela, cambios los chamos, giros a venezuela, pesos a bolivares, enviar bolivares, remesas colombia venezuela">
+    <meta name="author" content="Cambios Los Chamos">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://cambiosloschamos.com/" />
+    
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cambiosloschamos.com/">
+    <meta property="og:title" content="Cambios Los Chamos | Envía Dinero a Venezuela">
+    <meta property="og:description" content="Envía dinero a tu familia en Venezuela de forma rápida y segura. Cotiza tu envío hoy con Cambios Los Chamos.">
+    <meta property="og:image" content="https://cambiosloschamos.com/LogoLosChamos.avif">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://cambiosloschamos.com/">
+    <meta property="twitter:title" content="Cambios Los Chamos | Envía Dinero a Venezuela">
+    <meta property="twitter:description" content="Envía dinero a tu familia en Venezuela de forma rápida y segura. Cotiza tu envío hoy con Cambios Los Chamos.">
+    <meta property="twitter:image" content="https://cambiosloschamos.com/LogoLosChamos.avif">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#001A5C">
+</head>
+<body>
+    <div class="min-h-screen w-full bg-white">
+        <Hero client:load />
+        <Rates client:load />
+        <CTABanner />
+        <HowItWorks />
+        <Benefits />
+        <Visit client:load />
+        <Footer />
+    </div>
+</body>
 </html>
