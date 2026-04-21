@@ -137,15 +137,21 @@ export function Hero() {
               <span className="text-white/70 text-sm">Envías desde Colombia</span>
               <span className="text-xs rounded-full bg-white/20 text-white px-2 py-0.5">🇨🇴 COP</span>
             </div>
-            <div className="mt-2 tracking-tight flex items-center">
-              <span className="mr-1">$</span>
+            <div className="relative mt-2 tracking-tight flex items-center bg-white/5 hover:bg-white/10 border border-white/20 focus-within:border-[#FFCC00] rounded-xl px-4 py-2.5 transition group">
+              {/* Subtle background pulse */}
+              <div className="absolute inset-0 bg-[#FFCC00]/5 animate-pulse group-focus-within:hidden pointer-events-none rounded-xl" />
+              
+              <span className="mr-2 text-[#FFCC00] relative z-10">$</span>
               <input 
                 type="text" 
                 value={formattedCop} 
                 onChange={handleCopChange}
-                className="bg-transparent border-none text-white tracking-tight w-full focus:outline-none focus:ring-0 text-xl placeholder-white/50"
+                className="bg-transparent border-none text-[#FFCC00] tracking-tight w-full focus:outline-none focus:ring-0 text-2xl md:text-3xl font-bold placeholder-white/30 p-0 relative z-10"
                 placeholder="0"
               />
+              
+              {/* Blinking cursor explicitly telling the brain 'type here' */}
+              <div className="w-[3px] h-7 bg-[#FFCC00] animate-[pulse_1s_ease-in-out_infinite] rounded-full ml-1 opacity-80 group-focus-within:hidden pointer-events-none relative z-10" />
             </div>
             <div className="h-px bg-white/20 my-5" />
             <div className="flex items-center justify-between">
