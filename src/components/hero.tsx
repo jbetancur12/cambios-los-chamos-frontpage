@@ -14,8 +14,8 @@ export function Hero() {
         const res = await fetch(`${apiUrl}/exchange-rate/public-current`);
         if (res.ok) {
           const json = await res.json();
-          if (json.data && json.data.rate && json.data.rate.buyRate) {
-            setRate(parseFloat(json.data.rate.buyRate));
+          if (json.data && json.data.rate && json.data.rate.sellRate) {
+            setRate(parseFloat(json.data.rate.sellRate));
           }
         }
       } catch (err) {
@@ -106,7 +106,7 @@ export function Hero() {
           </p>
 
           <div className="mt-7 flex flex-wrap gap-3">
-            <button onClick={() => window.scrollTo({top: 300, behavior: 'smooth'})} className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FFCC00] to-[#FFB800] text-[#001A5C] hover:scale-105 transition px-6 py-3 shadow-xl">
+            <button onClick={() => window.scrollTo({ top: 300, behavior: 'smooth' })} className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FFCC00] to-[#FFB800] text-[#001A5C] hover:scale-105 transition px-6 py-3 shadow-xl">
               <Send className="h-4 w-4" /> Cotizar Hoy
             </button>
             <a href="#tasas" className="inline-flex items-center gap-2 rounded-full border-2 border-[#CF142B] bg-[#CF142B]/20 hover:bg-[#CF142B]/40 transition px-6 py-3">
@@ -140,16 +140,16 @@ export function Hero() {
             <div className="relative mt-2 tracking-tight flex items-center bg-white/5 hover:bg-white/10 border border-white/20 focus-within:border-[#FFCC00] rounded-xl px-4 py-2.5 transition group">
               {/* Subtle background pulse */}
               <div className="absolute inset-0 bg-[#FFCC00]/5 animate-pulse group-focus-within:hidden pointer-events-none rounded-xl" />
-              
+
               <span className="mr-2 text-[#FFCC00] relative z-10">$</span>
-              <input 
-                type="text" 
-                value={formattedCop} 
+              <input
+                type="text"
+                value={formattedCop}
                 onChange={handleCopChange}
                 className="bg-transparent border-none text-[#FFCC00] tracking-tight w-full focus:outline-none focus:ring-0 text-2xl md:text-3xl font-bold placeholder-white/30 p-0 relative z-10"
                 placeholder="0"
               />
-              
+
               {/* Blinking cursor explicitly telling the brain 'type here' */}
               <div className="w-[3px] h-7 bg-[#FFCC00] animate-[pulse_1s_ease-in-out_infinite] rounded-full ml-1 opacity-80 group-focus-within:hidden pointer-events-none relative z-10" />
             </div>
