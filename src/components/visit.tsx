@@ -1,6 +1,5 @@
 import { MapPin, Clock, Phone, Mail, Send } from "lucide-react";
 import { useState } from "react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 const info = [
   { icon: MapPin, title: "Dirección", text: "Cra 21 43-40, Dosquebradas", color: "bg-[#FFCC00] text-[#001A5C]" },

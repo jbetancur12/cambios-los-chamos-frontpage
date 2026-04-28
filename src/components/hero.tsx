@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Send, Menu, Sparkles } from "lucide-react";
+import { Send, Menu, X, Sparkles } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 export function Hero() {
   const [amountCop, setAmountCop] = useState<string>("200000");
   const [rate, setRate] = useState<number>(0.02512);
   const [loadingRate, setLoadingRate] = useState<boolean>(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchRate = async () => {
@@ -71,13 +72,44 @@ export function Hero() {
           <a href="#como-funciona" className="hover:text-[#FFCC00] cursor-pointer transition">¿Cómo funciona?</a>
           <a href="#contacto" className="hover:text-[#FFCC00] cursor-pointer transition">Contacto</a>
         </ul>
-        <button className="md:hidden">
-          <Menu className="h-6 w-6" />
+        <button className="md:hidden relative z-50" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menú">
+          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
         <a href="https://wa.me/573023414813?text=Hola,%20quiero%20hacer%20un%20env%C3%ADo%20con%20Cambios%20Los%20Chamos" target="_blank" rel="noopener noreferrer" className="hidden md:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#FFCC00] to-[#FFB800] hover:from-[#FFB800] hover:to-[#FF9900] text-[#001A5C] transition px-5 py-2 text-sm shadow-lg">
           Enviar Ahora
         </a>
       </nav>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40 md:hidden" onClick={() => setMobileMenuOpen(false)}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div
+            className="relative mx-4 mt-20 rounded-2xl bg-[#001A5C]/95 backdrop-blur-xl border border-white/20 p-6 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex rounded-full overflow-hidden h-1 mb-5">
+              <div className="flex-1 bg-[#FFCC00]" />
+              <div className="flex-1 bg-[#0033A0]" />
+              <div className="flex-1 bg-[#CF142B]" />
+            </div>
+            <ul className="flex flex-col gap-4 text-base text-white/90">
+              <li><a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#FFCC00] transition">Inicio</a></li>
+              <li><a href="#tasas" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#FFCC00] transition">Tasas</a></li>
+              <li><a href="#como-funciona" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#FFCC00] transition">¿Cómo funciona?</a></li>
+              <li><a href="#contacto" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#FFCC00] transition">Contacto</a></li>
+            </ul>
+            <a
+              href="https://wa.me/573023414813?text=Hola,%20quiero%20hacer%20un%20env%C3%ADo%20con%20Cambios%20Los%20Chamos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#FFCC00] to-[#FFB800] text-[#001A5C] font-semibold px-5 py-3 text-sm shadow-lg no-underline"
+            >
+              Enviar Ahora
+            </a>
+          </div>
+        </div>
+      )}
 
       <div className="relative max-w-7xl mx-auto px-6 pt-0 pb-28 grid md:grid-cols-2 gap-12 items-center md:-mt-12 lg:-mt-16">
         <div>

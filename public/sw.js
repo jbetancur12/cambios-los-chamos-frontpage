@@ -1,12 +1,12 @@
 // Service Worker "Killer"
 // This script replaces the old Service Worker and immediately unregisters itself.
 
-self.addEventListener('install', (e) => {
+self.addEventListener('install', () => {
     // Force this SW to become the active one immediately
     self.skipWaiting();
 });
 
-self.addEventListener('activate', (e) => {
+self.addEventListener('activate', () => {
     // Unregister itself
     self.registration.unregister()
         .then(() => {

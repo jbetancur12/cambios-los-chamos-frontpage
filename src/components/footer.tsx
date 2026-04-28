@@ -1,4 +1,4 @@
-import { Send, Facebook, Instagram, Twitter } from "lucide-react";
+import { Facebook, Instagram, Twitter } from "lucide-react";
 
 export function Footer() {
   return (
@@ -37,8 +37,11 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="relative max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 text-xs text-white/50 text-center">
-        © 2026 Cambios Los Chamos. Todos los derechos reservados. Hecho con ❤️ para Venezuela 🇻🇪
+      <div className="relative max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 text-xs text-white/50 text-center space-y-2">
+        <div>© 2026 Cambios Los Chamos. Todos los derechos reservados. Hecho con ❤️ para Venezuela 🇻🇪</div>
+        <div>
+          <a href="/tratamiento-datos-personales" className="text-white/40 hover:text-[#FFCC00] transition underline">Tratamiento de Datos Personales</a>
+        </div>
       </div>
     </footer>
   );
