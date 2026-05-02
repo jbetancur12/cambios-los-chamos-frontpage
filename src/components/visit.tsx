@@ -2,7 +2,7 @@ import { MapPin, Clock, Phone, Mail, Send } from "lucide-react";
 import { useState } from "react";
 
 const info = [
-  { icon: MapPin, title: "Dirección", text: "Cra 21 43-40, Dosquebradas", color: "bg-[#FFCC00] text-[#001A5C]" },
+  { icon: MapPin, title: "Dirección", text: "Cra 21 43-40 Av Los Molinos, Dosquebradas, Risaralda", color: "bg-[#FFCC00] text-[#001A5C]" },
   { icon: Clock, title: "Horario", text: "L-S: 8am-8:30pm | D: 8am-5pm", color: "bg-[#0033A0] text-white" },
   { icon: Phone, title: "Teléfono", text: "+57 302 341 4813", color: "bg-[#CF142B] text-white" },
   { icon: Mail, title: "Email", text: "hola@loschamos.com", color: "bg-[#FFCC00] text-[#001A5C]" },
@@ -21,7 +21,7 @@ export function Visit() {
     } else if (amount) {
       msg = `¡EPA CHAMO! Quiero enviar $${amount} COP. ¿Me ayudas con la cotización?`;
     }
-    
+
     window.open(`https://wa.me/573023414813?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
@@ -52,7 +52,7 @@ export function Visit() {
 
         <div className="mt-10 grid md:grid-cols-2 gap-6 items-stretch">
           <div className="rounded-3xl overflow-hidden shadow-2xl min-h-[320px] md:min-h-full relative group bg-gray-100">
-            <iframe 
+            <iframe
               src="https://maps.google.com/maps?q=Cra%2021%2043-40,%20Dosquebradas,%20Risaralda&t=&z=16&ie=UTF8&iwloc=&output=embed"
               className="absolute inset-0 w-full h-full border-0"
               allowFullScreen={false}
