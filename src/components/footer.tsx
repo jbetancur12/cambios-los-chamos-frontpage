@@ -30,7 +30,7 @@ export function Footer() {
         <div>
           <div className="text-[#FFCC00]">Contacto</div>
           <ul className="mt-4 space-y-2 text-sm text-white/70">
-            <li>📍 Cra 21 43-40, Dosquebradas, Risaralda</li>
+            <li>📍 Cra 21 43-40 AV Los Molinos, Dosquebradas, Risaralda</li>
             <li>🕒 L - S: 8:00 AM a 8:30 PM <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D: 8:00 AM a 5:00 PM</li>
             <li>📞 +57 302 341 4813</li>
             <li>✉️ hola@loschamos.com</li>
