@@ -42,7 +42,7 @@ export function Footer() {
 
         {/* Nueva línea para vinculación legal con Inversiones R&M */}
         <div className="text-white/40">
-          Cambios Los Chamos es una marca operada por <span className="font-semibold text-white/60">Inversiones R&M</span>. NIT: [Tu Número de NIT aquí]
+          Cambios Los Chamos es una marca operada por <span className="font-semibold text-white/60">Inversiones R&M</span>.
         </div>
 
         <div>
