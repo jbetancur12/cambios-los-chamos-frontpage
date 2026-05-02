@@ -31,7 +31,7 @@ export function Footer() {
           <div className="text-[#FFCC00]">Contacto</div>
           <ul className="mt-4 space-y-2 text-sm text-white/70">
             <li>📍 Cra 21 43-40, Dosquebradas, Risaralda</li>
-            <li>🕒 L - S: 8:00 AM a 8:30 PM <br/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D: 8:00 AM a 5:00 PM</li>
+            <li>🕒 L - S: 8:00 AM a 8:30 PM <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D: 8:00 AM a 5:00 PM</li>
             <li>📞 +57 302 341 4813</li>
             <li>✉️ hola@loschamos.com</li>
           </ul>
@@ -39,8 +39,16 @@ export function Footer() {
       </div>
       <div className="relative max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 text-xs text-white/50 text-center space-y-2">
         <div>© 2026 Cambios Los Chamos. Todos los derechos reservados. Hecho con ❤️ para Venezuela 🇻🇪</div>
+
+        {/* Nueva línea para vinculación legal con Inversiones R&M */}
+        <div className="text-white/40">
+          Cambios Los Chamos es una marca operada por <span className="font-semibold text-white/60">Inversiones R&M</span>. NIT: [Tu Número de NIT aquí]
+        </div>
+
         <div>
-          <a href="/tratamiento-datos-personales" className="text-white/40 hover:text-[#FFCC00] transition underline">Tratamiento de Datos Personales</a>
+          <a href="/tratamiento-datos-personales" className="text-white/40 hover:text-[#FFCC00] transition underline">
+            Tratamiento de Datos Personales
+          </a>
         </div>
       </div>
     </footer>
