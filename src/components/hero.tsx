@@ -64,7 +64,7 @@ export function Hero() {
 
       <nav className="relative max-w-7xl mx-auto flex items-center justify-between px-6 pt-4 pb-0 z-10">
         <div className="flex items-center">
-          <img src="/LogoLosChamos.avif" alt="Cambios Los Chamos" className="w-48 md:w-64 lg:w-[280px] h-auto object-contain -mb-10 -mt-[4.5rem]" />
+          <img src="/LogoLosChamos.avif" alt="Cambios Los Chamos" width="280" height="70" className="w-48 md:w-64 lg:w-[280px] h-auto object-contain -mb-10 -mt-[4.5rem]" />
         </div>
         <ul className="hidden md:flex items-center gap-8 text-sm text-white/80">
           <a href="#" className="hover:text-[#FFCC00] cursor-pointer transition">Inicio</a>
@@ -204,17 +204,23 @@ export function Hero() {
 
           {/* Floating Venezuela card */}
           <div className="absolute -top-6 -right-2 rounded-2xl overflow-hidden shadow-2xl border-4 border-[#FFCC00] rotate-6 hover:rotate-0 transition hidden md:block">
-            <ImageWithFallback
-              src="https://images.unsplash.com/photo-1724711603891-ca4557b9f40f?w=300"
+            <img
+              src="https://images.unsplash.com/photo-1724711603891-ca4557b9f40f?w=112&h=112&fit=crop&auto=format&q=80"
               alt="Caracas Venezuela"
+              width="112"
+              height="112"
               className="h-28 w-28 object-cover"
+              loading="lazy"
             />
           </div>
           <div className="absolute -bottom-6 -left-4 rounded-2xl overflow-hidden shadow-2xl border-4 border-[#CF142B] -rotate-6 hover:rotate-0 transition hidden md:block">
-            <ImageWithFallback
-              src="https://images.unsplash.com/photo-1758525865438-385dbc8caa5e?w=300"
+            <img
+              src="https://images.unsplash.com/photo-1758525865438-385dbc8caa5e?w=96&h=96&fit=crop&auto=format&q=80"
               alt="Familia feliz"
+              width="96"
+              height="96"
               className="h-24 w-24 object-cover"
+              loading="lazy"
             />
           </div>
         </div>

@@ -44,10 +44,13 @@ export function Benefits() {
 
         <div className="mt-12 rounded-3xl overflow-hidden shadow-2xl grid md:grid-cols-2">
           <div className="relative">
-            <ImageWithFallback
-              src="https://images.unsplash.com/photo-1713942590392-598b193afb1a?w=800"
+            <img
+              src="https://images.unsplash.com/photo-1713942590392-598b193afb1a?w=683&h=455&fit=crop&auto=format&q=80"
               alt="Familia venezolana feliz"
+              width="683"
+              height="455"
               className="w-full h-full object-cover min-h-[260px]"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0033A0]/60 to-transparent" />
             <div className="absolute top-4 left-4 text-3xl">🇻🇪</div>

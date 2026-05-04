@@ -15,7 +15,7 @@ export function Footer() {
 
       <div className="relative max-w-7xl mx-auto grid md:grid-cols-4 gap-10">
         <div>
-          <img src="/LogoLosChamos.avif" alt="Cambios Los Chamos" className="w-56 h-auto object-contain -ml-2 -mb-24 -mt-24" />
+          <img src="/LogoLosChamos.avif" alt="Cambios Los Chamos" width="224" height="56" className="w-56 h-auto object-contain -ml-2 -mb-24 -mt-24" />
           <p className="mt-4 text-sm text-white/60 relative z-10">
             La plataforma favorita de los venezolanos para enviar dinero a casa. Rápido, seguro y pana total.
           </p>

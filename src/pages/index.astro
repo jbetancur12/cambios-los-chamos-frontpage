@@ -14,6 +14,15 @@ import { Footer } from '../components/footer';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://cambiosloschamo.com">
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+
+    <!-- Preload LCP image -->
+    <link rel="preload" as="image" href="/LogoLosChamos.avif" fetchpriority="high">
+
     <!-- Basic SEO -->
     <title>Cambios Los Chamos | Envía Dinero a Venezuela</title>
     <meta name="description" content="Envía dinero a tu familia en Venezuela de forma rápida, segura y con más de 7 años de experiencia. Cotiza tu envío y disfruta la mejor tasa en Cambios Los Chamos.">
@@ -41,7 +50,7 @@ import { Footer } from '../components/footer';
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="icon" type="image/avif" href="/LogoLosChamos.avif">
+    <link rel="icon" type="image/avif" href="/LogoLosChamos.avif" fetchpriority="high">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
