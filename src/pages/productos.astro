@@ -1,0 +1,56 @@
+---
+import '../styles/globals.css'
+import { Products } from '../components/Products'
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos Venezolanos | Cambios Los Chamos</title>
+    <meta name="description" content="Harina PAN, dulces típicos, café venezolano y más. Tienda física de productos venezolanos en Dosquebradas.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://cambiosloschamos.com/productos" />
+    <meta property="og:title" content="Productos Venezolanos | Cambios Los Chamos">
+    <meta property="og:description" content="Harina PAN, dulces típicos, café venezolano y más. Tienda física en Dosquebradas.">
+    <meta property="og:image" content="https://cambiosloschamos.com/LogoLosChamos.avif">
+    <meta name="theme-color" content="#001A5C">
+</head>
+<body>
+    <div class="min-h-screen w-full bg-white">
+        <header class="relative bg-gradient-to-br from-[#00247D] via-[#0033A0] to-[#001A5C]">
+            <nav class="relative max-w-7xl mx-auto flex items-center justify-between px-6 py-4 z-10">
+                <a href="/">
+                    <img src="/LogoLosChamos.avif" alt="Cambios Los Chamos" class="w-40 md:w-52 h-auto object-contain" />
+                </a>
+                <ul class="flex items-center gap-6 text-sm text-white/80">
+                    <a href="/" class="hover:text-[#FFCC00] transition">Inicio</a>
+                    <a href="/productos" class="text-[#FFCC00] font-semibold">Productos</a>
+                    <a href="/#contacto" class="hover:text-[#FFCC00] transition">Contacto</a>
+                </ul>
+            </nav>
+            <div class="relative max-w-7xl mx-auto px-6 py-16 md:py-20 text-center">
+                <h1 class="text-3xl md:text-5xl font-bold text-white">
+                    Productos <span class="text-[#FFCC00]">Venezolanos</span>
+                </h1>
+                <p class="mt-3 text-white/70 max-w-xl mx-auto">
+                    Los sabores de tu tierra en un solo lugar. Harina PAN, dulces típicos, café, chocolate y más.
+                </p>
+            </div>
+            <div class="flex h-2 w-full">
+                <div class="flex-1 bg-[#FFCC00]" />
+                <div class="flex-1 bg-[#0033A0]" />
+                <div class="flex-1 bg-[#CF142B]" />
+            </div>
+        </header>
+
+        <Products client:load />
+
+        <footer class="bg-[#001A5C] text-white text-center py-8 px-6 text-sm text-white/60">
+            <p>&copy; {new Date().getFullYear()} Cambios Los Chamos. Todos los derechos reservados.</p>
+            <a href="/tratamiento-datos-personales" class="text-[#FFCC00] hover:underline">Tratamiento de Datos Personales</a>
+        </footer>
+    </div>
+</body>
+</html>

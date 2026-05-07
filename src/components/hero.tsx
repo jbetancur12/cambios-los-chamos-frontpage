@@ -122,6 +122,7 @@ export function Hero() {
           <a href="#" className="hover:text-[#FFCC00] cursor-pointer transition">Inicio</a>
           <a href="#tasas" className="hover:text-[#FFCC00] cursor-pointer transition">Tasas</a>
           <a href="#como-funciona" className="hover:text-[#FFCC00] cursor-pointer transition">¿Cómo funciona?</a>
+          <a href="/productos" className="hover:text-[#FFCC00] cursor-pointer transition">Productos</a>
           <a href="#contacto" className="hover:text-[#FFCC00] cursor-pointer transition">Contacto</a>
         </ul>
         <button className="md:hidden relative z-50" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Menú">
@@ -149,6 +150,7 @@ export function Hero() {
               <li><a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#FFCC00] transition">Inicio</a></li>
               <li><a href="#tasas" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#FFCC00] transition">Tasas</a></li>
               <li><a href="#como-funciona" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#FFCC00] transition">¿Cómo funciona?</a></li>
+              <li><a href="/productos" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#FFCC00] transition">Productos</a></li>
               <li><a href="#contacto" onClick={() => setMobileMenuOpen(false)} className="block py-2 hover:text-[#FFCC00] transition">Contacto</a></li>
             </ul>
             <a
