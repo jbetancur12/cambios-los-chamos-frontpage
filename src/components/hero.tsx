@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Send, Menu, X, Sparkles } from "lucide-react";
+import { Send, Menu, X, Sparkles, ShoppingBag } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 export function Hero() {
@@ -75,21 +75,37 @@ export function Hero() {
       </div>
 
       {showStoreBanner && (
-        <div className="relative z-10 bg-[#CF142B]">
-          <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 py-2">
+        <div className="relative z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#CF142B] via-[#CF142B] to-[#001A5C]" />
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-[#FFCC00] blur-2xl" />
+            <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-[#FFCC00] blur-2xl" />
+          </div>
+          <div className="relative max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 py-3 md:py-4">
             <a
               href="https://wa.me/573023414813?text=Hola%2C%20quiero%20saber%20qu%C3%A9%20productos%20venezolanos%20tienen%20en%20su%20tienda%20f%C3%ADsica"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-white text-xs md:text-sm font-medium hover:text-[#FFCC00] transition no-underline flex-1 min-w-0"
+              className="flex items-center gap-3 text-white no-underline flex-1 min-w-0"
             >
-              <span className="hidden md:inline">🇻🇪</span>
-              <span className="truncate">¿Buscas productos venezolanos? Contamos con tienda física — Escríbenos</span>
-              <span className="shrink-0 text-[#FFCC00] font-bold">WhatsApp &rarr;</span>
+              <span className="hidden md:flex items-center justify-center h-10 w-10 rounded-xl bg-[#FFCC00]/20 backdrop-blur shrink-0">
+                <ShoppingBag className="h-5 w-5 text-[#FFCC00]" />
+              </span>
+              <div className="min-w-0">
+                <div className="text-sm md:text-base font-semibold truncate">
+                  ¿Buscas productos venezolanos?
+                </div>
+                <div className="text-xs md:text-sm text-white/70 truncate">
+                  Harina PAN, dulces, café y más — Contamos con tienda física
+                </div>
+              </div>
+              <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#FFCC00] text-[#001A5C] hover:bg-[#FFB800] transition px-4 py-1.5 text-xs md:text-sm font-bold shadow-lg ml-auto md:ml-4">
+                <ShoppingBag className="h-3.5 w-3.5" /> Ver Productos
+              </span>
             </a>
             <button
               onClick={dismissStoreBanner}
-              className="shrink-0 ml-3 text-white/70 hover:text-white transition p-1"
+              className="shrink-0 ml-2 md:ml-3 text-white/60 hover:text-white transition p-1.5 rounded-lg hover:bg-white/10"
               aria-label="Cerrar"
             >
               <X className="h-4 w-4" />
