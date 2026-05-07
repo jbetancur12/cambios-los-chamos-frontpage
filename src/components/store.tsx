@@ -1,4 +1,4 @@
-import { Package, ShoppingBag, Store, Wheat, Candy, Coffee } from "lucide-react"
+import { Package, ShoppingBag, Store as StoreIcon, Wheat, Candy, Coffee } from "lucide-react"
 import { ImageWithFallback } from "./figma/ImageWithFallback"
 
 const categories = [
@@ -46,7 +46,7 @@ export function Store() {
             <div className="absolute -bottom-10 -left-10 h-48 w-48 rounded-full bg-[#CF142B]/15 blur-3xl" />
             <div className="relative">
               <div className="flex items-center gap-2">
-                <Store className="h-6 w-6 text-[#FFCC00]" />
+                <StoreIcon className="h-6 w-6 text-[#FFCC00]" />
                 <span className="text-[#FFCC00] font-semibold tracking-wide text-sm">VISÍTANOS</span>
               </div>
               <h3 className="mt-3 text-2xl md:text-3xl font-bold">
@@ -58,7 +58,7 @@ export function Store() {
               </p>
               <div className="mt-6 space-y-3">
                 <div className="flex items-center gap-3 text-sm text-white/80">
-                  <Store className="h-5 w-5 shrink-0 text-[#FFCC00]" />
+                  <StoreIcon className="h-5 w-5 shrink-0 text-[#FFCC00]" />
                   <span>Cra 21 43-40 Av Los Molinos, Dosquebradas, Risaralda</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm text-white/80">
