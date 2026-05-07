@@ -33,6 +33,18 @@ export function Hero() {
     setAmountCop(val);
   };
 
+  const [showStoreBanner, setShowStoreBanner] = useState(true)
+
+  useEffect(() => {
+    const dismissed = localStorage.getItem('storeBannerDismissed')
+    if (dismissed === 'true') setShowStoreBanner(false)
+  }, [])
+
+  const dismissStoreBanner = () => {
+    setShowStoreBanner(false)
+    localStorage.setItem('storeBannerDismissed', 'true')
+  }
+
   const bsAmount = (Number(amountCop) / rate).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const formattedCop = Number(amountCop).toLocaleString('es-CO');
   return (
@@ -61,6 +73,30 @@ export function Hero() {
           />
         ))}
       </div>
+
+      {showStoreBanner && (
+        <div className="relative z-10 bg-[#CF142B]">
+          <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 py-2">
+            <a
+              href="https://wa.me/573023414813?text=Hola%2C%20quiero%20saber%20qu%C3%A9%20productos%20venezolanos%20tienen%20en%20su%20tienda%20f%C3%ADsica"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-white text-xs md:text-sm font-medium hover:text-[#FFCC00] transition no-underline flex-1 min-w-0"
+            >
+              <span className="hidden md:inline">🇻🇪</span>
+              <span className="truncate">¿Buscas productos venezolanos? Contamos con tienda física — Escríbenos</span>
+              <span className="shrink-0 text-[#FFCC00] font-bold">WhatsApp &rarr;</span>
+            </a>
+            <button
+              onClick={dismissStoreBanner}
+              className="shrink-0 ml-3 text-white/70 hover:text-white transition p-1"
+              aria-label="Cerrar"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       <nav className="relative max-w-7xl mx-auto flex items-center justify-between px-6 pt-4 pb-0 z-10">
         <div className="flex items-center">
