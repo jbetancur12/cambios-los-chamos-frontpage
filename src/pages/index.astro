@@ -52,6 +52,9 @@ import { Footer } from '../components/footer';
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="icon" type="image/avif" href="/LogoLosChamos.avif" fetchpriority="high">
+    <link rel="icon" type="image/png" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -62,18 +65,18 @@ import { Footer } from '../components/footer';
       "url": "https://cambiosloschamo.com",
       "logo": "https://cambiosloschamo.com/LogoLosChamos.avif",
       "description": "Envía dinero a Venezuela de forma rápida, segura y con las mejores tasas.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+57-3023414813",
+        "contactType": "customer service",
+        "availableLanguage": ["es"]
+      },
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Cra 21 43-40 AV Los Molinos",
         "addressLocality": "Dosquebradas",
         "addressRegion": "Risaralda",
         "addressCountry": "CO"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+57 302 341 4813",
-        "contactType": "customer service",
-        "areaServed": "CO"
       },
       "sameAs": [
         "https://www.facebook.com/cambiosloschamos"

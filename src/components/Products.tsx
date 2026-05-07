@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react"
-import { ShoppingBag, Plus, Minus, X, ShoppingCart, Package, Store } from "lucide-react"
+import React, { useState, useEffect, useCallback, useMemo } from "react"
+import { ShoppingBag, Plus, Minus, X, ShoppingCart, Package, Search, ChevronLeft, ChevronRight, AlertTriangle } from "lucide-react"
 
 interface Product {
   id: string
@@ -16,6 +16,9 @@ interface CartItem {
 }
 
 const CART_KEY = "loschamos_cart"
+const PAGE_SIZE = 12
+
+const API_URL = import.meta.env?.PUBLIC_API_URL || "http://localhost:3000"
 
 function loadCart(): CartItem[] {
   try {
@@ -43,16 +46,22 @@ const FALLBACK_IMG = "data:image/svg+xml," + encodeURIComponent(
   </svg>`
 )
 
-export function Products() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
+function imgUrl(product: Product): string | undefined {
+  return product.imageUrl ? `${API_URL}${product.imageUrl}` : undefined
+}
+
+export function Products({ initialProducts }: { initialProducts?: Product[] }) {
+  const [products, setProducts] = useState<Product[]>(initialProducts || [])
+  const [loading, setLoading] = useState(!initialProducts)
   const [cart, setCart] = useState<CartItem[]>(loadCart)
   const [cartOpen, setCartOpen] = useState(false)
-  const [images, setImages] = useState<Record<string, boolean>>({})
+  const [imgs, setImgs] = useState<Record<string, boolean>>({})
+  const [search, setSearch] = useState("")
+  const [page, setPage] = useState(0)
 
   useEffect(() => {
-    const apiUrl = import.meta.env?.PUBLIC_API_URL || "http://localhost:3000"
-    fetch(`${apiUrl}/inventory/products/public`)
+    if (initialProducts) return
+    fetch(`${API_URL}/inventory/products/public`)
       .then((r) => r.json())
       .then((json) => {
         if (json.success) setProducts(json.data)
@@ -65,6 +74,15 @@ export function Products() {
     localStorage.setItem(CART_KEY, JSON.stringify(cart))
   }, [cart])
 
+  const query = search.toLowerCase().trim()
+  const filtered = useMemo(
+    () => (query ? products.filter((p) => p.name.toLowerCase().includes(query) || (p.description || "").toLowerCase().includes(query)) : products),
+    [products, query]
+  )
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const safePage = Math.min(page, totalPages - 1)
+  const paged = filtered.slice(safePage * PAGE_SIZE, (safePage + 1) * PAGE_SIZE)
+
   const cartCount = cart.reduce((a, i) => a + i.quantity, 0)
   const cartTotal = cart.reduce((a, i) => a + i.product.sellingPrice * i.quantity, 0)
 
@@ -73,7 +91,7 @@ export function Products() {
       const existing = prev.find((i) => i.product.id === product.id)
       if (existing) {
         return prev.map((i) =>
-          i.product.id === product.id ? { ...i, quantity: Math.min(i.quantity + 1, product.stock) } : i
+          i.product.id === product.id ? { ...i, quantity: Math.min(i.quantity + 1, product.stock || 1) } : i
         )
       }
       return [...prev, { product, quantity: 1 }]
@@ -83,10 +101,14 @@ export function Products() {
   const updateQty = useCallback((id: string, delta: number) => {
     setCart((prev) =>
       prev
-        .map((i) =>
-          i.product.id === id ? { ...i, quantity: Math.max(0, i.quantity + delta) } : i
-        )
-        .filter((i) => i.quantity > 0)
+        .map((i) => {
+          if (i.product.id !== id) return i
+          const next = i.quantity + delta
+          if (next <= 0) return null
+          if (next > i.product.stock) return { ...i, quantity: i.product.stock }
+          return { ...i, quantity: next }
+        })
+        .filter(Boolean) as CartItem[]
     )
   }, [])
 
@@ -102,6 +124,11 @@ export function Products() {
     window.open(`https://wa.me/573023414813?text=${msg}`, "_blank")
   }
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value)
+    setPage(0)
+  }
+
   if (loading) {
     return (
       <section className="relative py-20 px-6 bg-gradient-to-b from-white to-[#FFF9E6]">
@@ -111,78 +138,118 @@ export function Products() {
   }
 
   return (
-    <section className="relative py-20 px-6 bg-gradient-to-b from-white to-[#FFF9E6] overflow-hidden">
+    <section className="relative py-16 md:py-20 px-6 bg-gradient-to-b from-white to-[#FFF9E6] overflow-hidden">
       <div className="absolute top-40 right-0 h-96 w-96 rounded-full bg-[#FFCC00] blur-3xl opacity-10" />
       <div className="absolute bottom-40 left-0 h-96 w-96 rounded-full bg-[#CF142B] blur-3xl opacity-10" />
 
       <div className="relative max-w-7xl mx-auto">
-        <div className="text-center">
-          <span className="inline-block rounded-full bg-[#CF142B] text-white px-4 py-1.5 text-xs tracking-wider shadow">
-            🛒 PRODUCTOS VENEZOLANOS
-          </span>
-          <h2 className="mt-4">
-            Nuestra <span className="text-[#0033A0]">Tienda</span>
-          </h2>
-          <p className="mt-3 text-gray-600 max-w-2xl mx-auto">
-            Llevamos los sabores de Venezuela a tu mesa. Harina PAN, dulces, café y mucho más.
-          </p>
+        {/* Search */}
+        <div className="max-w-md mx-auto relative mb-8">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <input
+            type="text"
+            value={search}
+            onChange={handleSearch}
+            placeholder="Buscar productos..."
+            className="w-full rounded-full border-2 border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm outline-none focus:border-[#FFCC00] transition placeholder:text-gray-400"
+          />
+          {query && (
+            <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+              <X className="h-4 w-4" />
+            </button>
+          )}
         </div>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <div key={product.id} className="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-[#FFCC00] hover:shadow-xl transition flex flex-col">
-              <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden">
-                {product.imageUrl ? (
-                  <img
-                    src={images[product.id] === false ? FALLBACK_IMG : product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                    onError={() => setImages((prev) => ({ ...prev, [product.id]: false }))}
-                  />
-                ) : (
-                  <img src={FALLBACK_IMG} alt="" className="w-full h-full object-cover" />
-                )}
-                {product.stock <= 0 && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <span className="bg-white text-gray-700 px-3 py-1 rounded-full text-xs font-bold">
-                      Agotado
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div className="p-4 flex flex-col flex-1">
-                <h4 className="text-sm md:text-base font-semibold text-gray-800 line-clamp-2">{product.name}</h4>
-                {product.description && (
-                  <p className="mt-1 text-xs text-gray-500 line-clamp-2">{product.description}</p>
-                )}
-                <div className="mt-auto pt-3 flex items-center justify-between">
-                  <div>
-                    <div className="text-lg font-bold text-[#001A5C]">{formatPrice(product.sellingPrice)}</div>
-                    <div className={`text-xs ${product.stock > 5 ? "text-green-600" : product.stock > 0 ? "text-orange-500" : "text-red-500"}`}>
-                      {product.stock > 0 ? `${product.stock} en stock` : "Agotado"}
+        {/* Product grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {paged.map((product) => {
+            const url = imgUrl(product)
+            const cartItem = cart.find((i) => i.product.id === product.id)
+            const inCartQty = cartItem?.quantity || 0
+            const atLimit = inCartQty >= product.stock
+
+            return (
+              <div key={product.id} className="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-[#FFCC00] hover:shadow-xl transition flex flex-col">
+                <div className="relative aspect-[4/3] bg-gray-50 overflow-hidden">
+                  {url && imgs[product.id] !== false ? (
+                    <img
+                      src={url}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                      onError={() => setImgs((prev) => ({ ...prev, [product.id]: false }))}
+                    />
+                  ) : (
+                    <img src={FALLBACK_IMG} alt="" className="w-full h-full object-cover" />
+                  )}
+                  {product.stock <= 0 && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <span className="bg-white text-gray-700 px-3 py-1 rounded-full text-xs font-bold shadow">
+                        Agotado
+                      </span>
                     </div>
+                  )}
+                </div>
+                <div className="p-4 flex flex-col flex-1">
+                  <h4 className="text-sm md:text-base font-semibold text-gray-800 line-clamp-2">{product.name}</h4>
+                  {product.description && (
+                    <p className="mt-1 text-xs text-gray-500 line-clamp-2">{product.description}</p>
+                  )}
+                  <div className="mt-auto pt-3 flex items-center justify-between">
+                    <div className="text-lg font-bold text-[#001A5C]">{formatPrice(product.sellingPrice)}</div>
+                    <button
+                      onClick={() => addToCart(product)}
+                      disabled={product.stock <= 0}
+                      className="h-10 w-10 rounded-xl bg-[#FFCC00] hover:bg-[#FFB800] disabled:bg-gray-200 disabled:cursor-not-allowed text-[#001A5C] flex items-center justify-center shadow-lg transition"
+                    >
+                      <Plus className="h-5 w-5" />
+                    </button>
                   </div>
-                  <button
-                    onClick={() => addToCart(product)}
-                    disabled={product.stock <= 0}
-                    className="h-10 w-10 rounded-xl bg-[#FFCC00] hover:bg-[#FFB800] disabled:bg-gray-200 disabled:cursor-not-allowed text-[#001A5C] flex items-center justify-center shadow-lg transition"
-                  >
-                    <Plus className="h-5 w-5" />
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
-        {products.length === 0 && (
-          <div className="text-center text-gray-400 py-20">
+        {paged.length === 0 && (
+          <div className="text-center text-gray-400 py-16">
             <Package className="h-12 w-12 mx-auto mb-3 opacity-50" />
-            <p>Próximamente más productos</p>
+            <p>{query ? "No encontramos productos con ese nombre" : "Próximamente más productos"}</p>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-10 flex items-center justify-center gap-2">
+            <button
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={safePage === 0}
+              className="h-9 w-9 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setPage(i)}
+                className={`h-9 min-w-[2.25rem] rounded-xl text-sm font-semibold transition ${
+                  i === safePage ? "bg-[#001A5C] text-white" : "border border-gray-200 hover:bg-gray-50"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+              disabled={safePage >= totalPages - 1}
+              className="h-9 w-9 rounded-xl border border-gray-200 flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
         )}
       </div>
 
+      {/* Cart FAB */}
       {cartCount > 0 && (
         <button
           onClick={() => setCartOpen(true)}
@@ -193,6 +260,7 @@ export function Products() {
         </button>
       )}
 
+      {/* Cart drawer */}
       {cartOpen && (
         <div className="fixed inset-0 z-50 flex justify-end">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setCartOpen(false)} />
@@ -208,42 +276,54 @@ export function Products() {
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {cart.map((item) => (
-                <div key={item.product.id} className="flex items-center gap-3 bg-gray-50 rounded-xl p-3">
-                  {item.product.imageUrl && images[item.product.id] !== false ? (
-                    <img
-                      src={item.product.imageUrl}
-                      alt={item.product.name}
-                      className="h-14 w-14 rounded-lg object-cover shrink-0"
-                      onError={() => setImages((prev) => ({ ...prev, [item.product.id]: false }))}
-                    />
-                  ) : (
-                    <div className="h-14 w-14 rounded-lg bg-gray-200 flex items-center justify-center shrink-0">
-                      <Package className="h-6 w-6 text-gray-400" />
+              {cart.map((item) => {
+                const url = imgUrl(item.product)
+                const overStock = item.quantity > item.product.stock
+                return (
+                  <div key={item.product.id} className="bg-gray-50 rounded-xl p-3">
+                    <div className="flex items-center gap-3">
+                      {url && imgs[item.product.id] !== false ? (
+                        <img
+                          src={url}
+                          alt={item.product.name}
+                          className="h-14 w-14 rounded-lg object-cover shrink-0"
+                          onError={() => setImgs((prev) => ({ ...prev, [item.product.id]: false }))}
+                        />
+                      ) : (
+                        <div className="h-14 w-14 rounded-lg bg-gray-200 flex items-center justify-center shrink-0">
+                          <Package className="h-6 w-6 text-gray-400" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold truncate">{item.product.name}</div>
+                        <div className="text-xs text-gray-500">{formatPrice(item.product.sellingPrice)} c/u</div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => updateQty(item.product.id, -1)}
+                          className="h-7 w-7 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition"
+                        >
+                          <Minus className="h-3 w-3" />
+                        </button>
+                        <span className="w-6 text-center text-sm font-semibold">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQty(item.product.id, 1)}
+                          disabled={item.quantity >= item.product.stock}
+                          className="h-7 w-7 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-40 flex items-center justify-center transition"
+                        >
+                          <Plus className="h-3 w-3" />
+                        </button>
+                      </div>
                     </div>
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold truncate">{item.product.name}</div>
-                    <div className="text-xs text-gray-500">{formatPrice(item.product.sellingPrice)} c/u</div>
+                    {overStock && (
+                      <div className="mt-2 flex items-center gap-1.5 text-xs text-red-500 bg-red-50 rounded-lg px-2 py-1">
+                        <AlertTriangle className="h-3 w-3 shrink-0" />
+                        Solo hay {item.product.stock} unidades disponibles
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => updateQty(item.product.id, -1)}
-                      className="h-7 w-7 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition"
-                    >
-                      <Minus className="h-3 w-3" />
-                    </button>
-                    <span className="w-6 text-center text-sm font-semibold">{item.quantity}</span>
-                    <button
-                      onClick={() => updateQty(item.product.id, 1)}
-                      disabled={item.quantity >= item.product.stock}
-                      className="h-7 w-7 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-40 flex items-center justify-center transition"
-                    >
-                      <Plus className="h-3 w-3" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             <div className="border-t p-4 space-y-3">
