@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react"
 import { ShoppingBag, Plus, Minus, X, ShoppingCart, Package, Search, ChevronLeft, ChevronRight, AlertTriangle } from "lucide-react"
 
+interface ProductPresentation {
+  id: string
+  name: string
+  quantity: number
+  sellingPrice: number
+}
+
 interface Product {
   id: string
   name: string
@@ -8,10 +15,12 @@ interface Product {
   sellingPrice: number
   stock: number
   imageUrl?: string
+  presentations?: ProductPresentation[]
 }
 
 interface CartItem {
   product: Product
+  presentation?: ProductPresentation
   quantity: number
 }
 
@@ -19,6 +28,18 @@ const CART_KEY = "loschamos_cart"
 const PAGE_SIZE = 12
 
 const API_URL = import.meta.env?.PUBLIC_API_URL || "http://localhost:3000"
+
+function getItemKey(item: CartItem): string {
+  return item.presentation
+    ? `${item.product.id}-${item.presentation.id}`
+    : item.product.id
+}
+
+function getEffectiveStock(product: Product, presentation?: ProductPresentation): number {
+  return presentation
+    ? Math.floor(product.stock / presentation.quantity)
+    : product.stock
+}
 
 function loadCart(): CartItem[] {
   try {
@@ -84,28 +105,31 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
   const paged = filtered.slice(safePage * PAGE_SIZE, (safePage + 1) * PAGE_SIZE)
 
   const cartCount = cart.reduce((a, i) => a + i.quantity, 0)
-  const cartTotal = cart.reduce((a, i) => a + i.product.sellingPrice * i.quantity, 0)
 
-  const addToCart = useCallback((product: Product) => {
+  const addToCart = useCallback((product: Product, presentation?: ProductPresentation) => {
+    const effectiveStock = getEffectiveStock(product, presentation)
+    if (effectiveStock <= 0) return
+    const key = presentation ? `${product.id}-${presentation.id}` : product.id
     setCart((prev) => {
-      const existing = prev.find((i) => i.product.id === product.id)
+      const existing = prev.find((i) => getItemKey(i) === key)
       if (existing) {
         return prev.map((i) =>
-          i.product.id === product.id ? { ...i, quantity: Math.min(i.quantity + 1, product.stock || 1) } : i
+          getItemKey(i) === key ? { ...i, quantity: Math.min(i.quantity + 1, effectiveStock) } : i
         )
       }
-      return [...prev, { product, quantity: 1 }]
+      return [...prev, { product, presentation, quantity: 1 }]
     })
   }, [])
 
-  const updateQty = useCallback((id: string, delta: number) => {
+  const updateQty = useCallback((key: string, delta: number) => {
     setCart((prev) =>
       prev
         .map((i) => {
-          if (i.product.id !== id) return i
+          if (getItemKey(i) !== key) return i
           const next = i.quantity + delta
           if (next <= 0) return null
-          if (next > i.product.stock) return { ...i, quantity: i.product.stock }
+          const max = getEffectiveStock(i.product, i.presentation)
+          if (next > max) return { ...i, quantity: max }
           return { ...i, quantity: next }
         })
         .filter(Boolean) as CartItem[]
@@ -114,12 +138,19 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
 
   const sendOrder = () => {
     if (cart.length === 0) return
-    const lines = cart.map(
-      (i, idx) =>
-        `${idx + 1}. ${i.product.name} x${i.quantity} = ${formatPrice(i.product.sellingPrice * i.quantity)}`
-    )
+    const lines = cart.map((i, idx) => {
+      const label = i.presentation
+        ? `${i.product.name} — ${i.presentation.name}`
+        : i.product.name
+      const price = i.presentation ? i.presentation.sellingPrice : i.product.sellingPrice
+      return `${idx + 1}. ${label} x${i.quantity} = ${formatPrice(price * i.quantity)}`
+    })
+    const total = cart.reduce((a, i) => {
+      const price = i.presentation ? i.presentation.sellingPrice : i.product.sellingPrice
+      return a + price * i.quantity
+    }, 0)
     const msg = encodeURIComponent(
-      `¡Hola! Quiero hacer un pedido:\n\n${lines.join("\n")}\n\nTotal: ${formatPrice(cartTotal)}`
+      `¡Hola! Quiero hacer un pedido:\n\n${lines.join("\n")}\n\nTotal: ${formatPrice(total)}`
     )
     window.open(`https://wa.me/573023414813?text=${msg}`, "_blank")
   }
@@ -164,9 +195,7 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {paged.map((product) => {
             const url = imgUrl(product)
-            const cartItem = cart.find((i) => i.product.id === product.id)
-            const inCartQty = cartItem?.quantity || 0
-            const atLimit = inCartQty >= product.stock
+            const hasPresentations = product.presentations && product.presentations.length > 0
 
             return (
               <div key={product.id} className="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-[#FFCC00] hover:shadow-xl transition flex flex-col">
@@ -194,15 +223,72 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
                   {product.description && (
                     <p className="mt-1 text-xs text-gray-500 line-clamp-2">{product.description}</p>
                   )}
-                  <div className="mt-auto pt-3 flex items-center justify-between">
-                    <div className="text-lg font-bold text-[#001A5C]">{formatPrice(product.sellingPrice)}</div>
-                    <button
-                      onClick={() => addToCart(product)}
-                      disabled={product.stock <= 0}
-                      className="h-10 w-10 rounded-xl bg-[#FFCC00] hover:bg-[#FFB800] disabled:bg-gray-200 disabled:cursor-not-allowed text-[#001A5C] flex items-center justify-center shadow-lg transition"
-                    >
-                      <Plus className="h-5 w-5" />
-                    </button>
+
+                  <div className="mt-auto pt-3">
+                    {hasPresentations ? (
+                      <div className="flex flex-wrap gap-1.5">
+                        {product.presentations!.map((pp) => {
+                          const effectiveStock = getEffectiveStock(product, pp)
+                          const key = `${product.id}-${pp.id}`
+                          const inCart = cart.find((i) => getItemKey(i) === key)
+                          const inCartQty = inCart?.quantity || 0
+                          const atLimit = inCartQty >= effectiveStock
+                          return inCartQty > 0 ? (
+                            <div key={pp.id} className="inline-flex items-center gap-0.5 rounded-full bg-[#001A5C] text-white pl-2.5 pr-1 py-0.5 text-xs font-medium shadow-sm">
+                              <span className="truncate max-w-[80px]">{pp.name}</span>
+                              <span className="opacity-70 mx-0.5">·</span>
+                              <button onClick={() => updateQty(key, -1)} className="hover:bg-white/20 rounded-full p-0.5 transition">
+                                <Minus className="h-3 w-3" />
+                              </button>
+                              <span className="min-w-[14px] text-center">{inCartQty}</span>
+                              <button onClick={() => updateQty(key, 1)} disabled={atLimit} className="hover:bg-white/20 rounded-full p-0.5 disabled:opacity-30 transition">
+                                <Plus className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              key={pp.id}
+                              onClick={() => addToCart(product, pp)}
+                              disabled={effectiveStock <= 0}
+                              className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs font-medium text-gray-700 hover:border-[#FFCC00] hover:bg-[#FFF9E6] disabled:opacity-40 disabled:cursor-not-allowed transition shadow-sm"
+                            >
+                              <span className="truncate max-w-[80px]">{pp.name}</span>
+                              <span className="text-[#001A5C] font-bold">{formatPrice(pp.sellingPrice)}</span>
+                              <Plus className="h-3 w-3 text-gray-400 shrink-0" />
+                            </button>
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <div className="text-lg font-bold text-[#001A5C]">{formatPrice(product.sellingPrice)}</div>
+                        {(() => {
+                          const key = product.id
+                          const inCart = cart.find((i) => getItemKey(i) === key)
+                          const inCartQty = inCart?.quantity || 0
+                          const atLimit = inCartQty >= product.stock
+                          return inCartQty > 0 ? (
+                            <div className="flex items-center gap-1">
+                              <button onClick={() => updateQty(key, -1)} className="h-7 w-7 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
+                                <Minus className="h-3 w-3" />
+                              </button>
+                              <span className="w-5 text-center text-xs font-semibold">{inCartQty}</span>
+                              <button onClick={() => updateQty(key, 1)} disabled={atLimit} className="h-7 w-7 rounded-lg bg-gray-100 hover:bg-gray-200 disabled:opacity-30 flex items-center justify-center transition">
+                                <Plus className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => addToCart(product)}
+                              disabled={product.stock <= 0}
+                              className="h-10 w-10 rounded-xl bg-[#FFCC00] hover:bg-[#FFB800] disabled:bg-gray-200 disabled:cursor-not-allowed text-[#001A5C] flex items-center justify-center shadow-lg transition"
+                            >
+                              <Plus className="h-5 w-5" />
+                            </button>
+                          )
+                        })()}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -277,10 +363,16 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
 
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {cart.map((item) => {
+                const key = getItemKey(item)
                 const url = imgUrl(item.product)
-                const overStock = item.quantity > item.product.stock
+                const price = item.presentation ? item.presentation.sellingPrice : item.product.sellingPrice
+                const effectiveStock = getEffectiveStock(item.product, item.presentation)
+                const overStock = item.quantity > effectiveStock
+                const label = item.presentation
+                  ? `${item.product.name} — ${item.presentation.name}`
+                  : item.product.name
                 return (
-                  <div key={item.product.id} className="bg-gray-50 rounded-xl p-3">
+                  <div key={key} className="bg-gray-50 rounded-xl p-3">
                     <div className="flex items-center gap-3">
                       {url && imgs[item.product.id] !== false ? (
                         <img
@@ -295,20 +387,20 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-semibold truncate">{item.product.name}</div>
-                        <div className="text-xs text-gray-500">{formatPrice(item.product.sellingPrice)} c/u</div>
+                        <div className="text-sm font-semibold truncate">{label}</div>
+                        <div className="text-xs text-gray-500">{formatPrice(price)} c/u</div>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => updateQty(item.product.id, -1)}
+                          onClick={() => updateQty(key, -1)}
                           className="h-7 w-7 rounded-lg bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition"
                         >
                           <Minus className="h-3 w-3" />
                         </button>
                         <span className="w-6 text-center text-sm font-semibold">{item.quantity}</span>
                         <button
-                          onClick={() => updateQty(item.product.id, 1)}
-                          disabled={item.quantity >= item.product.stock}
+                          onClick={() => updateQty(key, 1)}
+                          disabled={item.quantity >= effectiveStock}
                           className="h-7 w-7 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:opacity-40 flex items-center justify-center transition"
                         >
                           <Plus className="h-3 w-3" />
@@ -318,7 +410,7 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
                     {overStock && (
                       <div className="mt-2 flex items-center gap-1.5 text-xs text-red-500 bg-red-50 rounded-lg px-2 py-1">
                         <AlertTriangle className="h-3 w-3 shrink-0" />
-                        Solo hay {item.product.stock} unidades disponibles
+                        Solo hay {effectiveStock} disponibles
                       </div>
                     )}
                   </div>
@@ -329,7 +421,12 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
             <div className="border-t p-4 space-y-3">
               <div className="flex items-center justify-between text-lg font-bold">
                 <span>Total</span>
-                <span className="text-[#CF142B]">{formatPrice(cartTotal)}</span>
+                <span className="text-[#CF142B]">
+                  {formatPrice(cart.reduce((a, i) => {
+                    const price = i.presentation ? i.presentation.sellingPrice : i.product.sellingPrice
+                    return a + price * i.quantity
+                  }, 0))}
+                </span>
               </div>
               <button
                 onClick={sendOrder}
