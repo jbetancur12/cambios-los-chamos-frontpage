@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import { Products } from '../components/Products'
 import { Footer } from '../components/footer'
 import { PromotionalBanner } from '../components/promotional-banner'
+import { CookieConsent } from '../components/cookie-consent'
 
 const promoSlides = [
   {
@@ -133,6 +134,7 @@ try {
         <PromotionalBanner client:load slides={promoSlides} />
         <Products client:load initialProducts={initialProducts} />
         <Footer />
+        <CookieConsent client:load />
     </div>
 </body>
 </html>

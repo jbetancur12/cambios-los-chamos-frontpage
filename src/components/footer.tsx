@@ -45,9 +45,13 @@ export function Footer() {
           Cambios Los Chamos es una marca operada por <span className="font-semibold text-white/60">Inversiones R&M</span> &mdash; NIT. <span className="font-semibold text-white/60">700.204.790-6</span>
         </div>
 
-        <div>
+        <div className="flex items-center justify-center gap-3 text-xs">
           <a href="/tratamiento-datos-personales" className="text-white/40 hover:text-[#FFCC00] transition underline">
             Tratamiento de Datos Personales
+          </a>
+          <span className="text-white/20">|</span>
+          <a href="/terminos-condiciones" className="text-white/40 hover:text-[#FFCC00] transition underline">
+            Términos y Condiciones
           </a>
         </div>
       </div>
