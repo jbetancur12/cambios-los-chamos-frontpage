@@ -54,6 +54,10 @@ export function Footer() {
             Términos y Condiciones
           </a>
         </div>
+        <div className="text-[10px] text-white/30 max-w-xl mx-auto leading-relaxed">
+          Cumplimos con la normativa colombiana de prevención de lavado de activos y financiación del terrorismo (SARLAFT).
+          Operamos bajo el marco legal de la República de Colombia. No realizamos transacciones financieras a través de WhatsApp.
+        </div>
       </div>
     </footer>
   );
