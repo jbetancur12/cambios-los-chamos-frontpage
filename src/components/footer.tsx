@@ -40,9 +40,9 @@ export function Footer() {
       <div className="relative max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 text-xs text-white/50 text-center space-y-2">
         <div>© 2026 Cambios Los Chamos. Todos los derechos reservados. Hecho con ❤️ para Venezuela 🇻🇪</div>
 
-        {/* Nueva línea para vinculación legal con Inversiones R&M */}
+        {/* Vinculación legal con Inversiones R&M */}
         <div className="text-white/40">
-          Cambios Los Chamos es una marca operada por <span className="font-semibold text-white/60">Inversiones R&M</span>.
+          Cambios Los Chamos es una marca operada por <span className="font-semibold text-white/60">Inversiones R&M</span> &mdash; NIT. <span className="font-semibold text-white/60">901.721.624-2</span>
         </div>
 
         <div>
