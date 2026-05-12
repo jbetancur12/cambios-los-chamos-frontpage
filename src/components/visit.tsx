@@ -5,7 +5,7 @@ const info = [
   { icon: MapPin, title: "Dirección", text: "Cra 21 43-40 Av Los Molinos, Dosquebradas, Risaralda", color: "bg-[#FFCC00] text-[#001A5C]" },
   { icon: Clock, title: "Horario", text: "L-S: 8am-8:30pm | D: 8am-5pm", color: "bg-[#0033A0] text-white" },
   { icon: Phone, title: "Teléfono", text: "+57 302 341 4813", color: "bg-[#CF142B] text-white" },
-  { icon: Mail, title: "Email", text: "hola@loschamos.com", color: "bg-[#FFCC00] text-[#001A5C]" },
+  { icon: Mail, title: "Email", text: "ramondali80@gmail.com", color: "bg-[#FFCC00] text-[#001A5C]" },
 ];
 
 export function Visit() {

@@ -33,7 +33,7 @@ export function Footer() {
             <li>📍 Cra 21 43-40 AV Los Molinos, Dosquebradas, Risaralda</li>
             <li>🕒 L - S: 8:00 AM a 8:30 PM <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D: 8:00 AM a 5:00 PM</li>
             <li>📞 +57 302 341 4813</li>
-            <li>✉️ hola@loschamos.com</li>
+            <li>✉️ ramondali80@gmail.com</li>
           </ul>
         </div>
       </div>
